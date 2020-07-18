@@ -19,7 +19,7 @@ class BlogsRepository(
 
     suspend fun getBlogs(): Flow<DataState<List<Blog>>> = flow {
         emit(DataState.Loading)
-        delay(2000)
+        delay(1000)
         try {
             val networkBlogs = blogsApi.getBlogs()
             val blogs = networkMapper.toBlogs(networkBlogs)
