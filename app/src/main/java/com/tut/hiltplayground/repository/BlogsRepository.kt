@@ -23,9 +23,12 @@ class BlogsRepository(
         try {
             val networkBlogs = blogsApi.getBlogs()
             val blogs = networkMapper.toBlogs(networkBlogs)
-            blogs.forEach {
-                blogsDao.upsert(cacheEntityMapper.fromDomainModel(it))
-            }
+            blogsDao.upsert(blogs.map {
+                cacheEntityMapper.fromDomainModel(it)
+            })
+//            blogs.forEach {
+//                blogsDao.upsert(cacheEntityMapper.fromDomainModel(it))
+//            }
             emit(DataState.Success(cacheEntityMapper.toBlogs(blogsDao.getBlogs())))
         } catch (exception: Exception) {
             emit(DataState.Error(exception))
